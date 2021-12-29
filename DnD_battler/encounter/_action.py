@@ -3,6 +3,9 @@ from ..creature import Creature
 from ..victory import Victory
 import math
 
+#formatting?
+N = "\n"
+
 class EncounterAction(EncounterBase):
 
     def addmob(self, n:int):
@@ -74,11 +77,11 @@ class EncounterAction(EncounterBase):
         damage = {x: 0 for x in self.sides}
         hp = {x: 0 for x in self.sides}
         for character in self:
-            for move in character.attacks:
-                move['damage'].avg = True
-                damage[character.alignment] += safediv((20 + move['attack'].bonus - ac[not_us(character.alignment)]),
-                                                       20 * move['damage'].roll())
-                move['damage'].avg = False
+            for move1 in character.attacks:
+                move = move1.ability_die
+                move.avg = True
+                damage[character.alignment] += safediv((20 + move.bonus - ac[not_us(character.alignment)]), 20 * move.roll())
+                move.avg = False
                 hp[character.alignment] += character.starting_hp
         (a, b) = list(self.sides)
         rate = {a: safediv(hp[a], damage[b], 0.0), b: safediv(hp[b], damage[a], 0.0)}
